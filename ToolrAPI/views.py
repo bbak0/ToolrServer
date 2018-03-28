@@ -5,6 +5,8 @@ from google.oauth2 import id_token
 from google.auth.transport import requests
 from .models import UserProfile, AuthToken
 from django.utils import timezone
+from .auth import *
+from .endpoints import *
 #android
 CLIENT_ID = "598921763095-u9953ph467i798ackeqt1dq1q4av203a.apps.googleusercontent.com"
 #web
@@ -55,20 +57,7 @@ def auth(request):
     return response
 
 #currently bugged: creates new token when one already exists
-def get_auth_token(userid):
-    user = UserProfile.objects.get(pk=userid)
 
-    token, created = AuthToken.objects.get_or_create(user=user)
-    print(token)
-    if created:
-        return token.token
-    else:
-        if token.expire > timezone.now():
-            token.delete()
-            new_token = AuthToken.objects.create(user=user)
-            return new_token.token
-        else:
-            return token.token
 
 
 def create_user(idinfo):
