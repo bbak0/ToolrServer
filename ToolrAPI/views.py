@@ -14,7 +14,7 @@ CLIENT_ID2 = "598921763095-9dt10r1bgb7vj20gtutvm9ot15fq5v0l.apps.googleuserconte
 
 # Create your views here.
 def index(request):
-    return HttpResponse("Nothing to see here")
+    return render(request, 'ToolrAPI/index.html')
 
 @csrf_exempt
 def auth(request):
