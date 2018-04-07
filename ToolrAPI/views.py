@@ -17,6 +17,11 @@ from google.auth.transport import requests
 from google.oauth2 import id_token
 from rest_framework import status
 
+#android
+CLIENT_ID = "598921763095-u9953ph467i798ackeqt1dq1q4av203a.apps.googleusercontent.com"
+#web
+CLIENT_ID2 = "598921763095-9dt10r1bgb7vj20gtutvm9ot15fq5v0l.apps.googleusercontent.com"
+
 def index(request):
     return render(request, 'ToolrAPI/index.html')
 
