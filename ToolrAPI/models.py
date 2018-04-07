@@ -1,28 +1,33 @@
+from django.conf import settings
+from django.contrib.auth.models import User
 from django.db import models
-from datetime import datetime, timedelta
+from django.db.models.signals import post_save
+from django.dispatch import receiver
 from django.utils import timezone
+from rest_framework.authtoken.models import Token
+
 import random
+from datetime import datetime, timedelta
+
+def get_token():
+    return None
 
 def get_expire_time():
     return timezone.now() + timedelta(days=1)
 
-def get_token():
-    return random.getrandbits(256)
 
 def get_sentinel_user():
     return UserProfile.objects.get_or_create(username='deleted')[0]
 
 # Create your models here.
 class UserProfile(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE, primary_key=True)
     first_name = models.CharField(max_length=100)
     last_name = models.CharField(max_length=100)
     email = models.EmailField()
-    google_id = models.TextField(primary_key = True)
+    google_id = models.TextField()
+    
 
-class AuthToken(models.Model):
-    user = models.ForeignKey('UserProfile', on_delete=models.CASCADE)
-    expire = models.DateTimeField(default=get_expire_time)
-    token = models.TextField(default=get_token)
 
 class Tool(models.Model):
     availability = models.BooleanField(default = True)
@@ -32,22 +37,37 @@ class Tool(models.Model):
     location_lon = models.FloatField(default = 0)
     name = models.CharField(max_length=100)
     price = models.FloatField()
-    owner = models.ForeignKey('UserProfile',
-                                related_name='tool_owner',
-                                on_delete=models.CASCADE)
-    lent_to = models.ForeignKey('UserProfile',
+    owner = models.ForeignKey(User,
+                            related_name='tool_owner',
+                            on_delete=models.CASCADE)
+    lent_to = models.ForeignKey(User,
                                 related_name='tool_borrower',
-                                on_delete=models.PROTECT)
+                                on_delete=models.PROTECT,
+                                null = True,
+                                blank = True)
 
 class Message(models.Model):
     message = models.TextField()
-    sender = models.ForeignKey('UserProfile',
+    sender = models.ForeignKey(User,
                                 related_name='sender',
                                 on_delete=models.SET(get_sentinel_user))
-    recipient = models.ForeignKey('UserProfile',
+    recipient = models.ForeignKey(User,
                                 related_name='recipient',
                                 on_delete=models.SET(get_sentinel_user))
 
 class Picture(models.Model):
     picture = models.ImageField()
-    tool = models.ForeignKey('Tool', related_name='tool', on_delete=models.CASCADE)
+    tool = models.ForeignKey('Tool', related_name='picture', on_delete=models.CASCADE)
+
+class UserRating(models.Model):
+    subject_user = models.ForeignKey(User, related_name='rated_user', on_delete=models.CASCADE)
+    rating_user = models.ForeignKey(User, related_name='rating_user', on_delete=models.CASCADE)
+    rating = models.IntegerField()
+
+    class Meta:
+        unique_together = ("subject_user", "rating_user")
+
+@receiver(post_save, sender=settings.AUTH_USER_MODEL)
+def create_auth_token(sender, instance=None, created=False, **kwargs):
+    if created:
+        Token.objects.create(user=instance)
