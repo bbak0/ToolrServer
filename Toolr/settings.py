@@ -17,6 +17,7 @@ import django_heroku
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
+GOOGLE_DRIVE_STORAGE_JSON_KEY_FILE = 'Toolr/Toolr.json'
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/2.0/howto/deployment/checklist/
@@ -42,6 +43,7 @@ INSTALLED_APPS = [
     'ToolrAPI',
     'rest_framework',
     'rest_framework.authtoken',
+    'gdstorage'
     
 ]
 
@@ -144,5 +146,5 @@ STATIC_URL = '/static/'
 STATIC_ROOT = 'static/'
 
 #deployment settings
-#django_heroku.settings(locals())
-#DATABASES['default'] = dj_database_url.config(conn_max_age=600, ssl_require=True)
+django_heroku.settings(locals())
+DATABASES['default'] = dj_database_url.config(conn_max_age=600, ssl_require=True)

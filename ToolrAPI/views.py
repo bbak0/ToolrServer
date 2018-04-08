@@ -3,19 +3,22 @@ from django.db.models import Avg, Q
 from django.shortcuts import render
 from django.utils import timezone
 from django.views.decorators.csrf import csrf_exempt
-from rest_framework import viewsets
+from rest_framework import status, viewsets
 from rest_framework.authtoken.models import Token
 from rest_framework.decorators import api_view
 from rest_framework.exceptions import APIException
+from rest_framework.parsers import FileUploadParser, MultiPartParser
 from rest_framework.response import Response
+from rest_framework.views import APIView
 
 from .models import Message, Tool, UserProfile, UserRating
 from .serializers import MessageSerializer, PictureSerializer, ToolSerializer
+from ToolrAPI.models import Picture
 from ToolrAPI.serializers import UserProfileSerializer, UserRatingSerializer
 from django.http import HttpResponse, JsonResponse
 from google.auth.transport import requests
 from google.oauth2 import id_token
-from rest_framework import status
+
 
 #android
 CLIENT_ID = "598921763095-u9953ph467i798ackeqt1dq1q4av203a.apps.googleusercontent.com"
@@ -82,7 +85,7 @@ class UserToolsViewSet(viewsets.ModelViewSet):
         user = self.request.user
         return Tool.objects.filter(owner = user)
 
-
+'''
 class PictureViewSet(viewsets.ModelViewSet):
     serializer_class = PictureSerializer
 
@@ -92,6 +95,7 @@ class PictureViewSet(viewsets.ModelViewSet):
     "id" - id of the tool
 
     """
+    '''
 class ArbitraryToolViewSet(viewsets.ModelViewSet):
     serializer_class = ToolSerializer
     queryset = Tool.objects.all()
@@ -161,3 +165,18 @@ def delete_rating(request):
     rating.delete()
     return Response(status=status.HTTP_204_NO_CONTENT)
 
+
+class PictureViewSet(APIView):
+
+    parser_classes = (MultiPartParser, )
+    def post(self, request, format='jpg'):
+        picture = request.FILES['file']
+        print(request.data)
+        Picture.objects.create(picture = picture, tool_id = request.data['tool_id'])
+        return Response(picture.name, status.HTTP_201_CREATED)
+
+    def get(self, request, format=None):
+        url = Picture.objects.get(pk=2)
+        a = url.picture.url
+        print(url.picture.file_data)
+        return Response({'url' : url.picture.url})

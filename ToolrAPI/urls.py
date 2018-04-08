@@ -18,5 +18,6 @@ urlpatterns = [
     #path('get/user/<int:id>', views.getUserProfile, name='getUserProfile'),
     url(r'^get_auth_token/$', rest_framework_views.obtain_auth_token, name='get_auth_token'),
     url(r'^api/', include(router.urls)),
-    path('api/rate/delete', views.delete_rating, name='delete_rating')
+    path('api/rate/delete', views.delete_rating, name='delete_rating'),
+    path('api/picture/', views.PictureViewSet.as_view())
 ]

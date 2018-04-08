@@ -8,6 +8,10 @@ from rest_framework.authtoken.models import Token
 
 import random
 from datetime import datetime, timedelta
+from gdstorage.storage import GoogleDriveStorage
+
+# Define Google Drive Storage
+gd_storage = GoogleDriveStorage()
 
 def get_token():
     return None
@@ -56,7 +60,7 @@ class Message(models.Model):
                                 on_delete=models.SET(get_sentinel_user))
 
 class Picture(models.Model):
-    picture = models.ImageField()
+    picture = models.ImageField(upload_to='pic', storage=gd_storage)
     tool = models.ForeignKey('Tool', related_name='picture', on_delete=models.CASCADE)
 
 class UserRating(models.Model):
