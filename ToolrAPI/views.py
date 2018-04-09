@@ -18,7 +18,7 @@ from .serializers import MessageSerializer, PictureSerializer, ToolSerializer
 from ToolrAPI.models import Picture
 from ToolrAPI.serializers import ConversationSerializer, \
     UserProfileSerializer, UserRatingSerializer
-from django.http import HttpResponse, JsonResponse
+from django.http import HttpResponse, JsonResponse, HttpResponseBadRequest
 from google.auth.transport import requests
 from google.oauth2 import id_token
 
