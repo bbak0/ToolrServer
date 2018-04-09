@@ -50,6 +50,20 @@ class Tool(models.Model):
                                 null = True,
                                 blank = True)
 
+class Conversation(models.Model):
+    user = models.ForeignKey(User,
+                            related_name='user',
+                            on_delete=models.CASCADE)
+    partner = models.ForeignKey(User,
+                            related_name='partner',
+                            on_delete=models.CASCADE)
+    partner_display = models.CharField(max_length=100)
+    last_message = models.TextField()
+
+    class Meta:
+        unique_together = ("user", "partner")
+
+
 class Message(models.Model):
     message = models.TextField()
     sender = models.ForeignKey(User,

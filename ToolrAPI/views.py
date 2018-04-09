@@ -1,20 +1,23 @@
 from django.contrib.auth.models import User
+from django.core.files import File
 from django.db.models import Avg, Q
 from django.shortcuts import render
 from django.utils import timezone
 from django.views.decorators.csrf import csrf_exempt
+from gdstorage.storage import GoogleDriveStorage
 from rest_framework import status, viewsets
 from rest_framework.authtoken.models import Token
 from rest_framework.decorators import api_view
-from rest_framework.exceptions import APIException
+from rest_framework.exceptions import APIException, NotFound
 from rest_framework.parsers import FileUploadParser, MultiPartParser
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
-from .models import Message, Tool, UserProfile, UserRating
+from .models import Conversation, Message, Tool, UserProfile, UserRating
 from .serializers import MessageSerializer, PictureSerializer, ToolSerializer
 from ToolrAPI.models import Picture
-from ToolrAPI.serializers import UserProfileSerializer, UserRatingSerializer
+from ToolrAPI.serializers import ConversationSerializer, \
+    UserProfileSerializer, UserRatingSerializer
 from django.http import HttpResponse, JsonResponse
 from google.auth.transport import requests
 from google.oauth2 import id_token
@@ -24,6 +27,7 @@ from google.oauth2 import id_token
 CLIENT_ID = "598921763095-u9953ph467i798ackeqt1dq1q4av203a.apps.googleusercontent.com"
 #web
 CLIENT_ID2 = "598921763095-9dt10r1bgb7vj20gtutvm9ot15fq5v0l.apps.googleusercontent.com"
+gd_storage = GoogleDriveStorage()
 
 def index(request):
     return render(request, 'ToolrAPI/index.html')
@@ -108,16 +112,53 @@ class ArbitraryToolViewSet(viewsets.ModelViewSet):
         
 class MessageViewSet(viewsets.ModelViewSet):
     serializer_class = MessageSerializer
-
+    
     
     def get_queryset(self):
-        return Message.objects.filter(sender = self.request.user) | Message.objects.filter(recipient = self.request.user)
+        user_id = self.request.query_params.get('user_id', None)
+        if user_id is None:
+            raise NotFound('no parameter found')
+        queryset = Message.objects.filter(
+                                        (Q(sender = self.request.user) &
+                                        Q(recipient_id = user_id))) | Message.objects.filter(Q(recipient = self.request.user) |
+                                        Q(sender_id = user_id))
+        
+        return queryset
 
     def perform_create(self, serializer):
         serializer.save(sender=self.request.user)
+        conv = Conversation.objects.filter(user = self.request.user, partner_id = self.request.data['recipient'])
+        if not conv:
+            partnerq = UserProfile.objects.get(user_id = self.request.data['recipient'])
+            userq = UserProfile.objects.get(user = self.request.user)
+            partnerd = partnerq.first_name + ' ' + partnerq.last_name
+            userd = userq.first_name + ' ' + userq.last_name
+            Conversation.objects.create(user = self.request.user,
+                                        partner_id = self.request.data['recipient'],
+                                        partner_display = partnerd,
+                                        last_message = self.request.data['message'])
+            Conversation.objects.create(user_id = self.request.data['recipient'],
+                                        partner = self.request.user,
+                                        partner_display = userd,
+                                        last_message = self.request.data['message'])
+        else:
+            conv1 = Conversation.objects.get(user = self.request.user,
+                                    partner_id = self.request.data['recipient'])
+            conv2 = Conversation.objects.get(user_id = self.request.data['recipient'],
+                                        partner = self.request.user)
+            conv1.last_message = self.request.data['message']
+            conv2.last_message = self.request.data['message']
+            conv1.save()
+            conv2.save()                            
 
     def perform_update(self, serializer):
         serializer.save(sender=self.request.user)
+
+class ConversationViewSet(viewsets.ModelViewSet):
+    serializer_class = ConversationSerializer
+    
+    def get_queryset(self):
+        return Conversation.objects.filter(user = self.request.user)
 
 
 class UserProfileViewSet(viewsets.ModelViewSet):
@@ -144,7 +185,18 @@ class UserProfileViewSet(viewsets.ModelViewSet):
 class UserRatingViewSet(viewsets.ModelViewSet):
 
     serializer_class = UserRatingSerializer
+
     queryset = UserRating.objects.all()
+
+    def get_queryset(self):
+        user_id = self.request.query_params.get('user_id', None)
+        if user_id is None:
+            raise NotFound('no parameter found')
+        try:
+            rating = UserRating.objects.filter(subject_user_id = user_id)
+        except UserRating.DoesNotExist:
+            raise NotFound('no existing rating found')
+        return rating
 
     def perform_create(self, serializer):
         serializer.save(rating_user=self.request.user)
@@ -160,10 +212,23 @@ def delete_rating(request):
     try:
         rating = UserRating.objects.get(subject_user_id = request.data['subject_user'], rating_user = request.user)
     except UserRating.DoesNotExist as e:
-        return Response(status=status.HTTP_404_NOT_FOUND)
+        raise NotFound('no existing rating found')
     
     rating.delete()
     return Response(status=status.HTTP_204_NO_CONTENT)
+
+@api_view(['GET'])
+def get_picture(request):
+    pid = request.data['id']
+    if pid is not None:
+        try:
+            picm = Picture.objects.get(pk=pid)
+        except Picture.DoesNotExist:
+            raise NotFound('picture not found')
+        dupex = gd_storage.open(picm.picture.url)
+        print(repr(dupex))
+    return Response(status=status.HTTP_204_NO_CONTENT)
+
 
 
 class PictureViewSet(APIView):
@@ -176,7 +241,20 @@ class PictureViewSet(APIView):
         return Response(picture.name, status.HTTP_201_CREATED)
 
     def get(self, request, format=None):
-        url = Picture.objects.get(pk=2)
-        a = url.picture.url
-        print(url.picture.file_data)
-        return Response({'url' : url.picture.url})
+        try:
+            url = Picture.objects.get(pk = request.GET.get('pid'))
+        except Picture.DoesNotExist:
+            raise NotFound('picture not found')
+        a = url.picture.name
+        dupex = gd_storage.open(a)
+        print(repr(dupex))
+        return HttpResponse(dupex, content_type="image/jpeg")
+
+    def delete(self, request):
+        try:
+            url = Picture.objects.get(pk = request.GET.get('pid'))
+        except Picture.DoesNotExist:
+            raise NotFound('picture not found')
+        url.delete()
+        return Response(status=status.HTTP_204_NO_CONTENT)
+

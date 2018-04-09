@@ -10,6 +10,7 @@ router.register(r'tool', views.ArbitraryToolViewSet, 'tool')
 router.register(r'message', views.MessageViewSet, 'message')
 router.register(r'userprofile', views.UserProfileViewSet)
 router.register(r'rate', views.UserRatingViewSet)
+router.register(r'conversations', views.ConversationViewSet, 'conversations')
 
 
 urlpatterns = [
@@ -19,5 +20,6 @@ urlpatterns = [
     url(r'^get_auth_token/$', rest_framework_views.obtain_auth_token, name='get_auth_token'),
     url(r'^api/', include(router.urls)),
     path('api/rate/delete', views.delete_rating, name='delete_rating'),
-    path('api/picture/', views.PictureViewSet.as_view())
+    path('api/picture/', views.PictureViewSet.as_view()),
+    path('api/get_picture/', views.get_picture,name='get_picture')
 ]
