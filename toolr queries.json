@@ -1,7 +1,7 @@
 {
 	"_type": "export",
 	"__export_format": 3,
-	"__export_date": "2018-04-07T03:17:35.300Z",
+	"__export_date": "2018-04-09T09:13:04.957Z",
 	"__export_source": "insomnia.desktop.app:v5.15.0",
 	"resources": [
 		{
@@ -32,16 +32,28 @@
 					"domain": "localhost",
 					"expires": "2019-04-04T18:37:20.000Z",
 					"hostOnly": true,
-					"id": "5932639239875974",
+					"id": "8359095217238519",
 					"key": "csrftoken",
 					"lastAccessed": "2018-04-05T18:37:20.027Z",
 					"maxAge": 31449600,
 					"path": "/",
 					"value": "zMtoYbCeNbLuaAGBEJkRXgMyX4Q9lKUevCwSIuk9Ai4JtGWIyb5DcKSoSnQcJTFZ"
+				},
+				{
+					"creation": "2018-04-09T07:13:55.846Z",
+					"domain": "google.com",
+					"expires": "2018-10-09T07:13:46.000Z",
+					"hostOnly": false,
+					"httpOnly": true,
+					"id": "36001107374835883",
+					"key": "NID",
+					"lastAccessed": "2018-04-09T07:13:55.846Z",
+					"path": "/",
+					"value": "127=jaF6-nkzlGUvP3ItRj9Uqnq42po19gmV7dVwU52PfaAiW-yFFyp-OUT76f9dwCb3Q4QW8YuQNfPVdrGg9h2H8QZ9CNrCba_laTqXrOWfBlkLiPKmDOBMiapCq0PhhF9l"
 				}
 			],
 			"created": 1521525371442,
-			"modified": 1522953440029,
+			"modified": 1523258035848,
 			"name": "Default Jar",
 			"parentId": "wrk_76b27d2391884ab8ad95ec4e2335b253",
 			"_type": "cookie_jar"
@@ -91,78 +103,26 @@
 			"_type": "request_group"
 		},
 		{
-			"_id": "req_69e482c9de1a4d6d889aaed37660c0be",
-			"authentication": {},
-			"body": {
-				"mimeType": "application/json",
-				"text": "{\n\t\t\"subject_user\": 8,\n\t\t\"rating\": 2\n\t}"
-			},
-			"created": 1523068161579,
+			"_id": "fld_053ea9a2f285484693dc4c7391f3f8f9",
+			"created": 1523139923225,
 			"description": "",
-			"headers": [
-				{
-					"id": "pair_7c8440c351f444d4947bc08f248184c9",
-					"name": "Authorization",
-					"value": "Token e88b0af80d2a8be31336fcaed3e1d4989adb64f2"
-				},
-				{
-					"id": "pair_96fcfda2580942c78df486799c326025",
-					"name": "Content-Type",
-					"value": "application/json"
-				}
-			],
-			"isPrivate": false,
-			"metaSortKey": -1523061673414.5,
-			"method": "POST",
-			"modified": 1523070997944,
-			"name": "Rate user",
-			"parameters": [],
+			"environment": {},
+			"metaSortKey": -1523139923225,
+			"modified": 1523139923225,
+			"name": "Pictures",
 			"parentId": "wrk_76b27d2391884ab8ad95ec4e2335b253",
-			"settingDisableRenderRequestBody": false,
-			"settingEncodeUrl": true,
-			"settingRebuildPath": true,
-			"settingSendCookies": true,
-			"settingStoreCookies": true,
-			"url": "localhost:8000/api/rate/",
-			"_type": "request"
+			"_type": "request_group"
 		},
 		{
-			"_id": "req_8e811455ec4546d6b821b46c04b2e00a",
-			"authentication": {},
-			"body": {
-				"mimeType": "multipart/form-data",
-				"params": [
-					{
-						"disabled": false,
-						"id": "pair_26ddf6229b6f405091a74551a39eff30",
-						"name": "token",
-						"value": "dupex"
-					}
-				]
-			},
-			"created": 1521525387411,
+			"_id": "fld_f71f9535e853478dbda3a9bf97aea0a5",
+			"created": 1523200243732,
 			"description": "",
-			"headers": [
-				{
-					"id": "pair_396772c3dfc14462a59d2cdbd9cc616f",
-					"name": "Content-Type",
-					"value": "multipart/form-data"
-				}
-			],
-			"isPrivate": false,
-			"metaSortKey": -1522966282544,
-			"method": "GET",
-			"modified": 1522966385868,
-			"name": "post token",
-			"parameters": [],
-			"parentId": "fld_98cacca839644b8eb1d09b1eb04a0119",
-			"settingDisableRenderRequestBody": false,
-			"settingEncodeUrl": true,
-			"settingRebuildPath": true,
-			"settingSendCookies": true,
-			"settingStoreCookies": true,
-			"url": "localhost:8000/get/user/111258852549055623872",
-			"_type": "request"
+			"environment": {},
+			"metaSortKey": -1523009773242.5,
+			"modified": 1523200250165,
+			"name": "Auth",
+			"parentId": "wrk_76b27d2391884ab8ad95ec4e2335b253",
+			"_type": "request_group"
 		},
 		{
 			"_id": "req_5df37b22e6134e248224f9cb34aaf315",
@@ -172,12 +132,13 @@
 			"description": "",
 			"headers": [
 				{
-					"disabled": true,
+					"disabled": false,
 					"id": "pair_aa2cd3bfc3e24a42918a3a9b7a87e210",
 					"name": "Authorization",
-					"value": "Token 61b77e7b00037e27ede38cd2d9ba02c2b89a01c7"
+					"value": "Token 3a99739c4f4b25e00922c3677caede5c1f327312"
 				},
 				{
+					"disabled": true,
 					"id": "pair_7ef78beab40a4da8bc67e5f7008349c2",
 					"name": "Authorization",
 					"value": "Token e88b0af80d2a8be31336fcaed3e1d4989adb64f2"
@@ -186,7 +147,7 @@
 			"isPrivate": false,
 			"metaSortKey": -1522966282556.5,
 			"method": "GET",
-			"modified": 1523070854130,
+			"modified": 1523265138382,
 			"name": "get user tools",
 			"parameters": [],
 			"parentId": "fld_98cacca839644b8eb1d09b1eb04a0119",
@@ -195,7 +156,7 @@
 			"settingRebuildPath": true,
 			"settingSendCookies": true,
 			"settingStoreCookies": true,
-			"url": "localhost:8000/api/user_tools/",
+			"url": "https://toolr-server.herokuapp.com/api/user_tools/",
 			"_type": "request"
 		},
 		{
@@ -212,7 +173,7 @@
 					"disabled": false,
 					"id": "pair_75fdb9c9d1664e40a92bb62900526c90",
 					"name": "Authorization",
-					"value": "Token 9c3362e1681e97b02e256ee7c6ddbba0d450f462"
+					"value": "Token 3a99739c4f4b25e00922c3677caede5c1f327312"
 				},
 				{
 					"id": "pair_d7299a80f7b2467c9a63f27b1afaebf2",
@@ -223,7 +184,7 @@
 			"isPrivate": false,
 			"metaSortKey": -1522966282581.5,
 			"method": "POST",
-			"modified": 1522974111107,
+			"modified": 1523200927126,
 			"name": "add new tool",
 			"parameters": [],
 			"parentId": "fld_98cacca839644b8eb1d09b1eb04a0119",
@@ -232,7 +193,7 @@
 			"settingRebuildPath": true,
 			"settingSendCookies": true,
 			"settingStoreCookies": true,
-			"url": "localhost:8000/api/tool/",
+			"url": "https://toolr-server.herokuapp.com/api/tool/",
 			"_type": "request"
 		},
 		{
@@ -248,7 +209,7 @@
 				{
 					"id": "pair_edcbf398eeb04f2094a6e88afa8fee1f",
 					"name": "Authorization",
-					"value": "Token 61b77e7b00037e27ede38cd2d9ba02c2b89a01c7"
+					"value": "Token 3a99739c4f4b25e00922c3677caede5c1f327312"
 				},
 				{
 					"id": "pair_602aadc7b6b04398b0a05d998eb2cd87",
@@ -259,7 +220,7 @@
 			"isPrivate": false,
 			"metaSortKey": -1522966282531.5,
 			"method": "PATCH",
-			"modified": 1523055150181,
+			"modified": 1523265148467,
 			"name": "update tool info",
 			"parameters": [],
 			"parentId": "fld_98cacca839644b8eb1d09b1eb04a0119",
@@ -268,16 +229,13 @@
 			"settingRebuildPath": true,
 			"settingSendCookies": true,
 			"settingStoreCookies": true,
-			"url": "localhost:8000/api/tool/5/",
+			"url": "https://toolr-server.herokuapp.com/api/tool/1/",
 			"_type": "request"
 		},
 		{
 			"_id": "req_9c2a18d9a7334afabae48c1d22134b59",
 			"authentication": {},
-			"body": {
-				"mimeType": "application/json",
-				"text": "{\n\t\"availability\": true,\n\t\"category\": 2,\n\t\"description\": \"test tool new user ccc\",\n\t\"location_lat\": 52.0,\n\t\"location_lon\": 21.0,\n\t\"name\": \"Dupex\",\n\t\"price\": 2137.0,\n\t\"lent_to\": null\n}"
-			},
+			"body": {},
 			"created": 1522966987606,
 			"description": "",
 			"headers": [
@@ -295,8 +253,8 @@
 			],
 			"isPrivate": false,
 			"metaSortKey": -1522966282569,
-			"method": "POST",
-			"modified": 1522973973515,
+			"method": "GET",
+			"modified": 1523264703753,
 			"name": "add new tool (Copy)",
 			"parameters": [],
 			"parentId": "fld_98cacca839644b8eb1d09b1eb04a0119",
@@ -305,7 +263,7 @@
 			"settingRebuildPath": true,
 			"settingSendCookies": true,
 			"settingStoreCookies": true,
-			"url": "localhost:8000/api/tool/",
+			"url": "https://toolr-server.herokuapp.com/api/tool/10/",
 			"_type": "request"
 		},
 		{
@@ -325,7 +283,7 @@
 			"isPrivate": false,
 			"metaSortKey": -1522966282575.25,
 			"method": "DELETE",
-			"modified": 1523068715942,
+			"modified": 1523264700600,
 			"name": "delete tool",
 			"parameters": [],
 			"parentId": "fld_98cacca839644b8eb1d09b1eb04a0119",
@@ -334,7 +292,41 @@
 			"settingRebuildPath": true,
 			"settingSendCookies": true,
 			"settingStoreCookies": true,
-			"url": "localhost:8000/api/tool/17",
+			"url": "https://toolr-server.herokuapp.com/api/tool/17",
+			"_type": "request"
+		},
+		{
+			"_id": "req_17f5511ab0ff4b78905fe390a7e6705d",
+			"authentication": {},
+			"body": {},
+			"created": 1523152430535,
+			"description": "",
+			"headers": [
+				{
+					"disabled": false,
+					"id": "pair_75fdb9c9d1664e40a92bb62900526c90",
+					"name": "Authorization",
+					"value": "Token 3a99739c4f4b25e00922c3677caede5c1f327312"
+				},
+				{
+					"id": "pair_d7299a80f7b2467c9a63f27b1afaebf2",
+					"name": "Content-Type",
+					"value": "application/json"
+				}
+			],
+			"isPrivate": false,
+			"metaSortKey": -1522966282579.9375,
+			"method": "GET",
+			"modified": 1523200972804,
+			"name": "get a tool",
+			"parameters": [],
+			"parentId": "fld_98cacca839644b8eb1d09b1eb04a0119",
+			"settingDisableRenderRequestBody": false,
+			"settingEncodeUrl": true,
+			"settingRebuildPath": true,
+			"settingSendCookies": true,
+			"settingStoreCookies": true,
+			"url": "https://toolr-server.herokuapp.com/api/tool/1",
 			"_type": "request"
 		},
 		{
@@ -353,8 +345,8 @@
 			"isPrivate": false,
 			"metaSortKey": -1523053186964,
 			"method": "GET",
-			"modified": 1523053798020,
-			"name": "Get list of messages",
+			"modified": 1523264683034,
+			"name": "Get list of messages in conversation",
 			"parameters": [],
 			"parentId": "fld_1fb6aa4b5758426590d1de0dbbb97b1b",
 			"settingDisableRenderRequestBody": false,
@@ -362,7 +354,7 @@
 			"settingRebuildPath": true,
 			"settingSendCookies": true,
 			"settingStoreCookies": true,
-			"url": "localhost:8000/api/message/",
+			"url": "https://toolr-server.herokuapp.com/api/message/?user_id=9",
 			"_type": "request"
 		},
 		{
@@ -370,12 +362,13 @@
 			"authentication": {},
 			"body": {
 				"mimeType": "application/json",
-				"text": "\t{\n\t\t\"message\": \"just testing\",\n\t\t\"recipient\": 111\n\t}"
+				"text": "\t{\n\t\t\"message\": \"sztos\",\n\t\t\"recipient\": 9\n\t}"
 			},
 			"created": 1523053864152,
 			"description": "",
 			"headers": [
 				{
+					"disabled": false,
 					"id": "pair_7c8440c351f444d4947bc08f248184c9",
 					"name": "Authorization",
 					"value": "Token e88b0af80d2a8be31336fcaed3e1d4989adb64f2"
@@ -384,12 +377,18 @@
 					"id": "pair_b9ef90e990e94f3db9b42709df7f34e1",
 					"name": "Content-Type",
 					"value": "application/json"
+				},
+				{
+					"disabled": true,
+					"id": "pair_eab54f682bb142d5a793597e1b59c240",
+					"name": "Authorization",
+					"value": "Token 9c3362e1681e97b02e256ee7c6ddbba0d450f462"
 				}
 			],
 			"isPrivate": false,
 			"metaSortKey": -1523009734772.75,
 			"method": "POST",
-			"modified": 1523053935382,
+			"modified": 1523264689364,
 			"name": "Send a message",
 			"parameters": [],
 			"parentId": "fld_1fb6aa4b5758426590d1de0dbbb97b1b",
@@ -398,7 +397,35 @@
 			"settingRebuildPath": true,
 			"settingSendCookies": true,
 			"settingStoreCookies": true,
-			"url": "localhost:8000/api/message/",
+			"url": "https://toolr-server.herokuapp.com/api/message/",
+			"_type": "request"
+		},
+		{
+			"_id": "req_b13901fd40f24db89a1fa6392eaed855",
+			"authentication": {},
+			"body": {},
+			"created": 1523253604941,
+			"description": "",
+			"headers": [
+				{
+					"id": "pair_7c8440c351f444d4947bc08f248184c9",
+					"name": "Authorization",
+					"value": "Token e88b0af80d2a8be31336fcaed3e1d4989adb64f2"
+				}
+			],
+			"isPrivate": false,
+			"metaSortKey": -1523042323916.1875,
+			"method": "GET",
+			"modified": 1523264686449,
+			"name": "Get a list of conversations",
+			"parameters": [],
+			"parentId": "fld_1fb6aa4b5758426590d1de0dbbb97b1b",
+			"settingDisableRenderRequestBody": false,
+			"settingEncodeUrl": true,
+			"settingRebuildPath": true,
+			"settingSendCookies": true,
+			"settingStoreCookies": true,
+			"url": "https://toolr-server.herokuapp.com/api/conversations/",
 			"_type": "request"
 		},
 		{
@@ -411,13 +438,13 @@
 				{
 					"id": "pair_7c8440c351f444d4947bc08f248184c9",
 					"name": "Authorization",
-					"value": "Token e88b0af80d2a8be31336fcaed3e1d4989adb64f2"
+					"value": "Token 3a99739c4f4b25e00922c3677caede5c1f327312"
 				}
 			],
 			"isPrivate": false,
 			"metaSortKey": -1523031460868.375,
 			"method": "GET",
-			"modified": 1523067948528,
+			"modified": 1523200865917,
 			"name": "Get arbitrary user profile",
 			"parameters": [],
 			"parentId": "fld_c0e65c51dae045c09a519b5c077cebd4",
@@ -426,7 +453,7 @@
 			"settingRebuildPath": true,
 			"settingSendCookies": true,
 			"settingStoreCookies": true,
-			"url": "localhost:8000/api/userprofile/",
+			"url": "https://toolr-server.herokuapp.com/api/userprofile/",
 			"_type": "request"
 		},
 		{
@@ -453,7 +480,7 @@
 			"isPrivate": false,
 			"metaSortKey": -1523020597820.5625,
 			"method": "PATCH",
-			"modified": 1523055668570,
+			"modified": 1523264680335,
 			"name": "Alter user profile details",
 			"parameters": [],
 			"parentId": "fld_c0e65c51dae045c09a519b5c077cebd4",
@@ -462,7 +489,43 @@
 			"settingRebuildPath": true,
 			"settingSendCookies": true,
 			"settingStoreCookies": true,
-			"url": "localhost:8000/api/userprofile/8/",
+			"url": "https://toolr-server.herokuapp.com/api/userprofile/8/",
+			"_type": "request"
+		},
+		{
+			"_id": "req_69e482c9de1a4d6d889aaed37660c0be",
+			"authentication": {},
+			"body": {
+				"mimeType": "application/json",
+				"text": "{\n\t\t\"subject_user\": 8,\n\t\t\"rating\": 2\n\t}"
+			},
+			"created": 1523068161579,
+			"description": "",
+			"headers": [
+				{
+					"id": "pair_7c8440c351f444d4947bc08f248184c9",
+					"name": "Authorization",
+					"value": "Token e88b0af80d2a8be31336fcaed3e1d4989adb64f2"
+				},
+				{
+					"id": "pair_96fcfda2580942c78df486799c326025",
+					"name": "Content-Type",
+					"value": "application/json"
+				}
+			],
+			"isPrivate": false,
+			"metaSortKey": -1523057430239.25,
+			"method": "POST",
+			"modified": 1523264665177,
+			"name": "Rate user",
+			"parameters": [],
+			"parentId": "fld_4880c941ad9b4401b96060e5b90cf320",
+			"settingDisableRenderRequestBody": false,
+			"settingEncodeUrl": true,
+			"settingRebuildPath": true,
+			"settingSendCookies": true,
+			"settingStoreCookies": true,
+			"url": "https://toolr-server.herokuapp.com/api/rate/",
 			"_type": "request"
 		},
 		{
@@ -470,7 +533,7 @@
 			"authentication": {},
 			"body": {
 				"mimeType": "application/json",
-				"text": "{\n\t\t\"subject_user\": 8\n}"
+				"text": "\t{\n\t\t\"subject_user\": 8,\n\t\t\"rating\": 2\n\t}"
 			},
 			"created": 1523068662007,
 			"description": "",
@@ -489,7 +552,7 @@
 			"isPrivate": false,
 			"metaSortKey": -1523057430189.25,
 			"method": "DELETE",
-			"modified": 1523070996785,
+			"modified": 1523264673803,
 			"name": "Delete rating",
 			"parameters": [],
 			"parentId": "fld_4880c941ad9b4401b96060e5b90cf320",
@@ -498,7 +561,258 @@
 			"settingRebuildPath": true,
 			"settingSendCookies": true,
 			"settingStoreCookies": true,
-			"url": "localhost:8000/api/rate/delete",
+			"url": "https://toolr-server.herokuapp.com/api/rate/delete",
+			"_type": "request"
+		},
+		{
+			"_id": "req_e62bcee429c446118fe2d365ada980f1",
+			"authentication": {},
+			"body": {
+				"mimeType": "application/json",
+				"text": ""
+			},
+			"created": 1523251935340,
+			"description": "",
+			"headers": [
+				{
+					"id": "pair_7c8440c351f444d4947bc08f248184c9",
+					"name": "Authorization",
+					"value": "Token e88b0af80d2a8be31336fcaed3e1d4989adb64f2"
+				},
+				{
+					"id": "pair_96fcfda2580942c78df486799c326025",
+					"name": "Content-Type",
+					"value": "application/json"
+				}
+			],
+			"isPrivate": false,
+			"metaSortKey": -1523057430214.25,
+			"method": "GET",
+			"modified": 1523264670136,
+			"name": "get your rating for user",
+			"parameters": [],
+			"parentId": "fld_4880c941ad9b4401b96060e5b90cf320",
+			"settingDisableRenderRequestBody": false,
+			"settingEncodeUrl": true,
+			"settingRebuildPath": true,
+			"settingSendCookies": true,
+			"settingStoreCookies": true,
+			"url": "https://toolr-server.herokuapp.com/api/rate/?user_id=8",
+			"_type": "request"
+		},
+		{
+			"_id": "req_544b0562146a4abeab65f220763744a7",
+			"authentication": {},
+			"body": {
+				"mimeType": "multipart/form-data",
+				"params": [
+					{
+						"fileName": "C:\\Users\\Zordon\\Downloads\\665.jpg",
+						"id": "pair_e2faac145b2d440b9b89f9d327f14612",
+						"name": "file",
+						"type": "file",
+						"value": ""
+					},
+					{
+						"id": "pair_0f99cbd24e6f42b2a4d1bd8774fc9645",
+						"name": "tool_id",
+						"value": "10"
+					}
+				]
+			},
+			"created": 1523139946597,
+			"description": "",
+			"headers": [
+				{
+					"disabled": false,
+					"id": "pair_75fdb9c9d1664e40a92bb62900526c90",
+					"name": "Authorization",
+					"value": "Token 9c3362e1681e97b02e256ee7c6ddbba0d450f462"
+				},
+				{
+					"disabled": true,
+					"id": "pair_d7299a80f7b2467c9a63f27b1afaebf2",
+					"name": "Content-Type",
+					"value": "multipart/form-data"
+				},
+				{
+					"disabled": false,
+					"id": "pair_1361906dcf0249c1b8ee43a50f104c06",
+					"name": "Content-Disposition",
+					"value": "form-data; filename=\"665.jpg\""
+				},
+				{
+					"disabled": false,
+					"id": "pair_f4c927e88b934cd3bf02c0cd9c28a071",
+					"name": "Content-Disposition",
+					"value": "form-data; name=\"data\""
+				}
+			],
+			"isPrivate": false,
+			"metaSortKey": -1522966282578.375,
+			"method": "POST",
+			"modified": 1523264656950,
+			"name": "add image to tool",
+			"parameters": [],
+			"parentId": "fld_053ea9a2f285484693dc4c7391f3f8f9",
+			"settingDisableRenderRequestBody": false,
+			"settingEncodeUrl": true,
+			"settingRebuildPath": true,
+			"settingSendCookies": true,
+			"settingStoreCookies": true,
+			"url": "https://toolr-server.herokuapp.com/api/picture/",
+			"_type": "request"
+		},
+		{
+			"_id": "req_c2e1f1cfd86d4e31bf3ba02cb1207055",
+			"authentication": {},
+			"body": {},
+			"created": 1523141155957,
+			"description": "",
+			"headers": [
+				{
+					"disabled": false,
+					"id": "pair_75fdb9c9d1664e40a92bb62900526c90",
+					"name": "Authorization",
+					"value": "Token 9c3362e1681e97b02e256ee7c6ddbba0d450f462"
+				},
+				{
+					"disabled": true,
+					"id": "pair_f4c927e88b934cd3bf02c0cd9c28a071",
+					"name": "",
+					"value": ""
+				},
+				{
+					"id": "pair_399e1392b586488b9c436a57c3b4b802",
+					"name": "Content-Type",
+					"value": "application/x-www-form-urlencoded"
+				}
+			],
+			"isPrivate": false,
+			"metaSortKey": -1522966282577.5938,
+			"method": "GET",
+			"modified": 1523264659971,
+			"name": "get image",
+			"parameters": [],
+			"parentId": "fld_053ea9a2f285484693dc4c7391f3f8f9",
+			"settingDisableRenderRequestBody": false,
+			"settingEncodeUrl": true,
+			"settingRebuildPath": true,
+			"settingSendCookies": true,
+			"settingStoreCookies": true,
+			"url": "https://toolr-server.herokuapp.com/api/picture/?pid=3",
+			"_type": "request"
+		},
+		{
+			"_id": "req_4f8b0599b6664c5ab7df58ff4e87f544",
+			"authentication": {},
+			"body": {},
+			"created": 1523262691926,
+			"description": "",
+			"headers": [
+				{
+					"disabled": false,
+					"id": "pair_75fdb9c9d1664e40a92bb62900526c90",
+					"name": "Authorization",
+					"value": "Token 9c3362e1681e97b02e256ee7c6ddbba0d450f462"
+				},
+				{
+					"disabled": true,
+					"id": "pair_f4c927e88b934cd3bf02c0cd9c28a071",
+					"name": "",
+					"value": ""
+				},
+				{
+					"id": "pair_c3c7a16e0afa4d80885956eea7f0a0db",
+					"name": "Content-Type",
+					"value": "application/x-www-form-urlencoded"
+				}
+			],
+			"isPrivate": false,
+			"metaSortKey": -1522966282576.4219,
+			"method": "DELETE",
+			"modified": 1523264662626,
+			"name": "delete image",
+			"parameters": [],
+			"parentId": "fld_053ea9a2f285484693dc4c7391f3f8f9",
+			"settingDisableRenderRequestBody": false,
+			"settingEncodeUrl": true,
+			"settingRebuildPath": true,
+			"settingSendCookies": true,
+			"settingStoreCookies": true,
+			"url": "https://toolr-server.herokuapp.com/api/picture/?pid=2",
+			"_type": "request"
+		},
+		{
+			"_id": "req_7ec937f83d414a76b8f9ed98bd3e7629",
+			"authentication": {},
+			"body": {
+				"mimeType": "application/json",
+				"text": "{\n\t\"username\": \"111258852549055623872\",\n\t\"password\": \"111258852549055623872\"\n}"
+			},
+			"created": 1523200321947,
+			"description": "both username and password are google ID of user. This id can be found in NetworkUtils class under the name \"googleToken\". To use any other requests you need to put the token in the header of the request. Example tokens are already in place in most requests but most of them were used on different server instance so they are incorrect and need to be replaced with new ones.",
+			"headers": [
+				{
+					"id": "pair_4b46b2b23bdf4a0a9031810fda3344ad",
+					"name": "Content-Type",
+					"value": "application/json"
+				}
+			],
+			"isPrivate": false,
+			"metaSortKey": -1523200321947,
+			"method": "POST",
+			"modified": 1523263651883,
+			"name": "get token",
+			"parameters": [],
+			"parentId": "fld_f71f9535e853478dbda3a9bf97aea0a5",
+			"settingDisableRenderRequestBody": false,
+			"settingEncodeUrl": true,
+			"settingRebuildPath": true,
+			"settingSendCookies": true,
+			"settingStoreCookies": true,
+			"url": "https://toolr-server.herokuapp.com/get_auth_token/",
+			"_type": "request"
+		},
+		{
+			"_id": "req_36b5a4ab17834f889e917ba8ff27ef3b",
+			"authentication": {},
+			"body": {
+				"mimeType": "multipart/form-data",
+				"params": [
+					{
+						"id": "pair_10ba97f26e1c4720888be87125974409",
+						"name": "token",
+						"value": ""
+					}
+				]
+			},
+			"created": 1523264749835,
+			"description": "",
+			"headers": [
+				{
+					"id": "pair_066f4fb8f9cc45a6a5ab8a3b8c5efa8e",
+					"name": "",
+					"value": ""
+				},
+				{
+					"name": "Content-Type",
+					"value": "multipart/form-data"
+				}
+			],
+			"isPrivate": false,
+			"metaSortKey": -1523264749835,
+			"method": "GET",
+			"modified": 1523264785520,
+			"name": "register new user",
+			"parameters": [],
+			"parentId": "fld_f71f9535e853478dbda3a9bf97aea0a5",
+			"settingDisableRenderRequestBody": false,
+			"settingEncodeUrl": true,
+			"settingRebuildPath": true,
+			"settingSendCookies": true,
+			"settingStoreCookies": true,
+			"url": "https://toolr-server.herokuapp.com/register/",
 			"_type": "request"
 		}
 	]
