@@ -69,11 +69,14 @@ def register(request):
                 uprofile.email = idinfo['email']
                 uprofile.google_id = userid
                 uprofile.save()
+            else:
+                newuser = User.objects.get(username=userid)
 
         except ValueError as e:
             print(e)
             return HttpResponseBadRequest(e)
-    token = Token.objects.get(user_id=userid)
+    print(userid)
+    token = Token.objects.get(user = newuser)
     print(token.key)
 
     response = HttpResponse()
