@@ -72,7 +72,7 @@ class Message(models.Model):
     recipient = models.ForeignKey(User,
                                 related_name='recipient',
                                 on_delete=models.SET(get_sentinel_user))
-    sendAt = models.CharField(max_length=100)
+    sendAt = models.CharField(max_length=100, default=0)
 
 class Picture(models.Model):
     picture = models.ImageField(upload_to='pic', storage=gd_storage)
