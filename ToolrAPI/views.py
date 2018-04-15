@@ -73,7 +73,7 @@ def register(request):
         except ValueError as e:
             print(e)
             return HttpResponseBadRequest(e)
-    token = Token.objects.get(user=newuser)
+    token = Token.objects.get(user_id=userid)
     print(token.key)
 
     response = HttpResponse()
