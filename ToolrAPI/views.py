@@ -109,7 +109,7 @@ class ArbitraryToolViewSet(viewsets.ModelViewSet):
 
     def get_queryset(self):
         category = self.request.query_params.get('category', None)
-        if type(category) is int:
+        if category is not None:
             queryset = Tool.objects.filter(category = category)
         else: 
             queryset = Tool.objects.all()
