@@ -81,6 +81,7 @@ def register(request):
 
     response = HttpResponse()
     response['token'] = token
+    response['user_id'] = newuser.id
 
     return response
 
