@@ -120,7 +120,7 @@ class MessageViewSet(viewsets.ModelViewSet):
             raise NotFound('no parameter found')
         queryset = Message.objects.filter(
                                         (Q(sender = self.request.user) &
-                                        Q(recipient_id = user_id))) | Message.objects.filter(Q(recipient = self.request.user) |
+                                        Q(recipient_id = user_id))) | Message.objects.filter(Q(recipient = self.request.user) &
                                         Q(sender_id = user_id))
         
         return queryset
