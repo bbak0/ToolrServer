@@ -106,7 +106,15 @@ class PictureViewSet(viewsets.ModelViewSet):
     '''
 class ArbitraryToolViewSet(viewsets.ModelViewSet):
     serializer_class = ToolSerializer
-    queryset = Tool.objects.all()
+
+    def get_queryset(self):
+        category = self.request.query_params.get('category', None)
+        if category is not None:
+            queryset = Tool.objects.filter(category = category)
+        else: 
+            queryset = Tool.objects.all()
+        
+        return queryset
 
     def perform_create(self, serializer):
         serializer.save(owner=self.request.user)
