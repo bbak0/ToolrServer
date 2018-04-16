@@ -28,6 +28,8 @@ class UserProfile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, primary_key=True)
     first_name = models.CharField(max_length=100)
     last_name = models.CharField(max_length=100)
+    adress = models.CharField(max_length = 500, default='')
+    birthdate = models.DateField(default = '1970-01-01')
     email = models.EmailField()
     google_id = models.TextField()
     
