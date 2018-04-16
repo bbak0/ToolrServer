@@ -15,10 +15,13 @@ class PictureSerializer(serializers.ModelSerializer):
 class ToolSerializer(serializers.ModelSerializer):
 
     picture = PictureSerializer(many=True, required=False)
+    city = serializers.CharField(max_length = 100, read_only = True)
+    adress = serializers.CharField(max_length = 100, read_only = True)
+
     class Meta:
         model = Tool
         fields = '__all__'
-        read_only_fields = ('owner',)
+        read_only_fields = ('owner', 'location_lat', 'location_lon')
 
 class MessageSerializer(serializers.ModelSerializer):
 

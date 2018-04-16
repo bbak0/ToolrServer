@@ -21,12 +21,14 @@ from ToolrAPI.serializers import ConversationSerializer, \
 from django.http import HttpResponse, JsonResponse, HttpResponseBadRequest
 from google.auth.transport import requests
 from google.oauth2 import id_token
+import googlemaps
 
 
 #android
 CLIENT_ID = "598921763095-u9953ph467i798ackeqt1dq1q4av203a.apps.googleusercontent.com"
 #web
 CLIENT_ID2 = "598921763095-9dt10r1bgb7vj20gtutvm9ot15fq5v0l.apps.googleusercontent.com"
+gmaps = googlemaps.Client(key="AIzaSyDzbXy9TagMLChUqJNIkcsc4_anB8MePZg")
 gd_storage = GoogleDriveStorage()
 
 def index(request):
@@ -117,7 +119,13 @@ class ArbitraryToolViewSet(viewsets.ModelViewSet):
         return queryset
 
     def perform_create(self, serializer):
-        serializer.save(owner=self.request.user)
+        print(self.request.data)
+        city = self.request.data['city']
+        adress = self.request.data['adress']
+        geo = gmaps.geocode(city + ', ' + adress)
+        serializer.save(location_lat = geo[0]['geometry']['location']['lat'],
+                        location_lon = geo[0]['geometry']['location']['lng'],
+                        owner=self.request.user)
 
     def perform_update(self, serializer):
         serializer.save(owner=self.request.user)
