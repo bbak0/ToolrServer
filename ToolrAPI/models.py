@@ -112,7 +112,9 @@ class Message(models.Model):
     proposal = models.ForeignKey(Loan,
                                 related_name='proposal',
                                 on_delete = models.CASCADE,
-                                default = None)
+                                default = None,
+                                null = True,
+                                blank = True)
 
 
 @receiver(post_save, sender=settings.AUTH_USER_MODEL)
