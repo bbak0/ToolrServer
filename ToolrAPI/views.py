@@ -104,7 +104,7 @@ class PictureViewSet(viewsets.ModelViewSet):
     Parameters:
     "id" - id of the tool
 
-    """
+    """     
     '''
 class ArbitraryToolViewSet(viewsets.ModelViewSet):
     serializer_class = ToolSerializer
@@ -471,6 +471,18 @@ def getLentTools(request):
 @api_view(['GET'])
 def getLentList(request):
     queryset = Loan.objects.filter(Q(tool_owner = request.user) & Q(accepted = True) & Q(returned = False))
+    serializer = LoanSerializer(queryset, many = True)
+    return Response(serializer.data)
+
+@api_view(['GET'])
+def getFinishedLoans(request):
+    queryset = Loan.objects.filter(Q(tool_owner = request.user) & Q(returned = True))
+    serializer = LoanSerializer(queryset, many = True)
+    return Response(serializer.data)
+
+@api_view(['GET'])
+def getFinishedBorrows(request):
+    queryset = Loan.objects.filter(Q(borrowing_user = request.user) & Q(returned = True))
     serializer = LoanSerializer(queryset, many = True)
     return Response(serializer.data)
 

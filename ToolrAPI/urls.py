@@ -33,4 +33,6 @@ urlpatterns = [
     path('api/loan/lent_tools/', views.getLentTools),
     path('api/loan/lent_list/', views.getLentList),
     path('api/loan/borrowed_list/', views.getBorrowedList),
+    path('api/loan/borrowed_list_finished/', views.getFinishedBorrows),
+    path('api/loan/lent_list_finished/', views.getFinishedLoans),
 ]
