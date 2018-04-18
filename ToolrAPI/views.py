@@ -289,8 +289,8 @@ def proposeLoan(request, tool_id):
             raise NotFound('bad query')
 
         new_loan = Loan.objects.create(tool_owner = tool.owner, borrowing_user = request.user, tool_id = tool_id)
-
-        return Response(status = status.HTTP_201_CREATED, data = {"loan_id" : new_loan.id})
+        serializer = LoanSerializer(new_loan)
+        return Response(status = status.HTTP_201_CREATED, data = serializer.data)
 
     if request.method == 'DELETE':
         try:

@@ -75,6 +75,11 @@ class Message(models.Model):
                                 related_name='recipient',
                                 on_delete=models.SET(get_sentinel_user))
     sendAt = models.CharField(max_length=100, default=0)
+    isProposal = models.BooleanField(default=False)
+    proposal = models.ForeignKey(Loan,
+                                related_name='proposal',
+                                on_delete = models.CASCADE,
+                                default = None)
 
 class Picture(models.Model):
     picture = models.ImageField(upload_to='pic', storage=gd_storage)
