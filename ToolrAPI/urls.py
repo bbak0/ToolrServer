@@ -21,5 +21,16 @@ urlpatterns = [
     url(r'^api/', include(router.urls)),
     path('api/rate/delete', views.delete_rating, name='delete_rating'),
     path('api/picture/', views.PictureViewSet.as_view()),
-    path('api/get_picture/', views.get_picture,name='get_picture')
+    path('api/get_picture/', views.get_picture,name='get_picture'),
+    path('api/loan/propose/<int:tool_id>/', views.proposeLoan, name='propose_loan'),
+    path('api/loan/accept/<int:loan_id>/', views.acceptProposal, name = 'accept_proposal'),
+    path('api/loan/return/<int:loan_id>/', views.returnTool, name='return_tool'),
+    path('api/loan/rateowner/<int:loan_id>/', views.rateOwner, name = 'rate_owner'),
+    path('api/loan/rateborrower/<int:loan_id>/', views.rateBorrower, name='rate_borrower'),
+    path('api/loan/own_proposals/', views.getOwnProposals),
+    path('api/loan/pending_proposals/', views.getPendingProposals),
+    path('api/loan/borrowed_tools/', views.getBorrowedTools),
+    path('api/loan/lent_tools/', views.getLentTools),
+    path('api/loan/lent_list/', views.getLentList),
+    path('api/loan/borrowed_list/', views.getBorrowedList),
 ]

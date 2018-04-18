@@ -13,8 +13,8 @@ from rest_framework.parsers import FileUploadParser, MultiPartParser
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
-from .models import Conversation, Message, Tool, UserProfile, UserRating
-from .serializers import MessageSerializer, PictureSerializer, ToolSerializer
+from .models import Conversation, Message, Tool, UserProfile, UserRating, Loan
+from .serializers import MessageSerializer, PictureSerializer, ToolSerializer, LoanSerializer
 from ToolrAPI.models import Picture
 from ToolrAPI.serializers import ConversationSerializer, \
     UserProfileSerializer, UserRatingSerializer
@@ -277,4 +277,214 @@ class PictureViewSet(APIView):
             raise NotFound('picture not found')
         url.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
+
+
+@api_view(['POST', 'DELETE'])
+def proposeLoan(request, tool_id):
+
+    if request.method == 'POST':
+        try:
+            tool = Tool.objects.get(pk = tool_id)
+        except Tool.DoesNotExist:
+            raise NotFound('bad query')
+
+        new_loan = Loan.objects.create(tool_owner = tool.owner, borrowing_user = request.user, tool_id = tool_id)
+
+        return Response(status = status.HTTP_201_CREATED, data = {"loan_id" : new_loan.id})
+
+    if request.method == 'DELETE':
+        try:
+            loan = Loan.objects.get(pk = tool_id) #actually loan id in this case
+        except Loan.DoesNotExist:
+            raise NotFound('could not find loan')
+        if loan.pending == True:
+            loan.delete()
+            return Response(status=status.HTTP_204_NO_CONTENT)
+        else:
+            return Response(status = status.HTTP_401_UNAUTHORIZED,
+                            data={"error": "cannot delete proposal that is not pending"})
+
+@api_view(['POST'])
+def acceptProposal(request, loan_id):
+    try:
+        loan = Loan.objects.get(pk = loan_id)
+    except Loan.DoesNotExist:
+        raise NotFound('could not find loan')
+
+    try:
+        tool = Tool.objects.get(pk = loan.tool_id)
+    except Tool.DoesNotExist:
+        raise NotFound('could not find tool')
+    
+    if loan.pending == True:
+
+        proposal_accepted = request.query_params.get('accepted')
+        
+        if proposal_accepted == 'true':
+
+            if tool.availability == False:
+                return Response(status = status.HTTP_409_CONFLICT, 
+                                data={"error": "tool is unavailable currently"})
+            loan.accepted = True
+            tool.availability = False
+            tool.lent_to = loan.borrowing_user
+            tool.save()
+            
+        else:
+            loan.accepted = False
+        
+        loan.pending = False
+        loan.save()
+    else:
+        raise NotFound('proposal is not pending for acceptance')
+
+    return Response(status = status.HTTP_201_CREATED)
+
+@api_view(['POST'])
+def returnTool(request, loan_id):
+    try:
+        loan = Loan.objects.get(pk = loan_id)
+    except Loan.DoesNotExist:
+        raise NotFound('could not find loan')
+
+    try:
+        tool = Tool.objects.get(pk = loan.tool_id)
+    except Tool.DoesNotExist:
+        raise NotFound('could not find tool')
+
+    if request.user != loan.tool_owner:
+        return Response(status = status.HTTP_401_UNAUTHORIZED)
+    
+    if loan.returned == True or tool.availability == True or loan.accepted == False:
+        return Response(status = status.HTTP_400_BAD_REQUEST,
+                        data={"error" : "tool not borrowed"})
+
+    loan.returned = True
+    loan.save()
+    tool.availability = True
+    tool.lent_to_id = None
+    tool.save()
+
+    return Response(status = status.HTTP_201_CREATED)
+
+@api_view(['POST', 'DELETE'])
+def rateOwner(request, loan_id):
+
+    try:
+        loan = Loan.objects.get(pk = loan_id)
+    except Loan.DoesNotExist:
+        raise NotFound('could not find loan')
+
+    if loan.borrowing_user != request.user or loan.returned == False:
+        return Response(status = status.HTTP_401_UNAUTHORIZED)
+    
+    if request.method == 'POST':
+        if loan.rating_owner == -1:
+            new_rating = UserRating.objects.create(subject_user = loan.tool_owner,
+                                                rating_user = loan.borrowing_user,
+                                                rating = int(request.query_params.get('rating')))
+            loan.rating_owner = new_rating.id
+            loan.save()
+            return Response(status = status.HTTP_201_CREATED)
+        else:
+            return Response(status = status.HTTP_400_BAD_REQUEST,
+                            data= {"error" : "loan already rated"})
+
+    if request.method == 'DELETE':
+        try:
+            rating = UserRating.objects.get(pk = loan.rating_owner)
+            rating.delete()
+            loan.rating_owner = -1
+            loan.save()
+            return Response(status=status.HTTP_204_NO_CONTENT)
+        except Rating.DoesNotExist:
+            raise NotFound('could not find rating')
+
+
+@api_view(['POST', 'DELETE'])
+def rateBorrower(request, loan_id):
+
+    try:
+        loan = Loan.objects.get(pk = loan_id)
+    except Loan.DoesNotExist:
+        raise NotFound('could not find loan')
+
+    if loan.tool_owner != request.user:
+        return Response(status = status.HTTP_401_UNAUTHORIZED)
+    
+    if request.method == 'POST':
+        if loan.rating_borrower == -1:
+            new_rating = UserRating.objects.create(subject_user = loan.borrowing_user,
+                                                rating_user = loan.tool_owner,
+                                                rating = int(request.query_params.get('rating')))
+            loan.rating_borrower = new_rating.id
+            loan.save()
+            return Response(status = status.HTTP_201_CREATED)
+        else:
+            return Response(status = status.HTTP_400_BAD_REQUEST,
+                            data= {"error" : "loan already rated"})
+
+    if request.method == 'DELETE':
+        try:
+            rating = UserRating.objects.get(pk = loan.rating_borrower)
+            rating.delete()
+            loan.rating_borrower = -1
+            loan.save()
+            return Response(status=status.HTTP_204_NO_CONTENT)
+        except Rating.DoesNotExist:
+            raise NotFound('could not find rating')
+
+
+@api_view(['GET'])
+def getOwnProposals(request):
+    queryset = Loan.objects.filter(Q(borrowing_user = request.user) & Q(pending = True))
+    serializer = LoanSerializer(queryset, many=True)
+    return Response(serializer.data)
+
+@api_view(['GET'])
+def getPendingProposals(request):
+    queryset = Loan.objects.filter(Q(tool_owner = request.user) & Q(pending = True))
+    serializer = LoanSerializer(queryset, many=True)
+    return Response(serializer.data)
+
+
+@api_view(['GET'])
+def getBorrowedTools(request):
+    print(request.user.id)
+    queryset = Tool.objects.filter(lent_to = request.user)
+    serializer = ToolSerializer(queryset, many = True)
+    return Response(serializer.data)
+
+@api_view(['GET'])
+def getBorrowedList(request):
+    queryset = Loan.objects.filter(Q(borrowing_user = request.user) & Q(accepted = True) & Q(returned = False))
+    serializer = LoanSerializer(queryset, many = True)
+    return Response(serializer.data)
+
+
+@api_view(['GET'])
+def getLentTools(request):
+    queryset = Tool.objects.filter(Q(owner = request.user) & Q(availability = False) & ~Q(lent_to = None))
+    serializer = ToolSerializer(queryset, many = True)
+    return Response(serializer.data)
+
+@api_view(['GET'])
+def getLentList(request):
+    queryset = Loan.objects.filter(Q(tool_owner = request.user) & Q(accepted = True) & Q(returned = False))
+    serializer = LoanSerializer(queryset, many = True)
+    return Response(serializer.data)
+
+
+
+
+
+
+        
+
+
+
+
+
+
+
 

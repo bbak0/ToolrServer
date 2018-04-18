@@ -1,7 +1,7 @@
 from gdstorage.storage import GoogleDriveStorage
 from rest_framework import serializers
 
-from .models import Conversation, Message, Picture, Tool, UserProfile
+from .models import Conversation, Message, Picture, Tool, UserProfile, Loan
 from ToolrAPI.models import UserRating
 
 
@@ -51,4 +51,10 @@ class ConversationSerializer(serializers.ModelSerializer):
     class Meta:
         model = Conversation
         fields = ('partner', 'last_message', 'partner_display')
+
+class LoanSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = Loan
+        fields = '__all__'
         

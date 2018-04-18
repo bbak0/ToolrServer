@@ -85,8 +85,28 @@ class UserRating(models.Model):
     rating_user = models.ForeignKey(User, related_name='rating_user', on_delete=models.CASCADE)
     rating = models.IntegerField()
 
+class Loan(models.Model):
+    tool_owner = models.ForeignKey(User,
+                                related_name='loan_owner',
+                                on_delete=models.PROTECT,
+                                null = True,
+                                blank = True)
+    borrowing_user =  models.ForeignKey(User,
+                                related_name='loan_borrower',
+                                on_delete=models.PROTECT,
+                                null = True,
+                                blank = True)
+    tool = models.ForeignKey('Tool', related_name='loan_tool', on_delete=models.CASCADE)
+    accepted = models.BooleanField(default=False)
+    pending = models.BooleanField(default=True)
+    returned = models.BooleanField(default=False)
+    rating_owner = models.IntegerField(default=-1)
+    rating_borrower = models.IntegerField(default=-1)
+    date = models.DateField(auto_now_add=True)
+
     class Meta:
-        unique_together = ("subject_user", "rating_user")
+        unique_together = ('tool', 'borrowing_user', 'date')
+
 
 @receiver(post_save, sender=settings.AUTH_USER_MODEL)
 def create_auth_token(sender, instance=None, created=False, **kwargs):
