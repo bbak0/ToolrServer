@@ -375,7 +375,7 @@ def rateOwner(request, loan_id):
     except Loan.DoesNotExist:
         raise NotFound('could not find loan')
 
-    if loan.borrowing_user != request.user or loan.returned == False:
+    if loan.borrowing_user != request.user:
         return Response(status = status.HTTP_401_UNAUTHORIZED)
     
     if request.method == 'POST':
