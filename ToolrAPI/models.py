@@ -66,20 +66,7 @@ class Conversation(models.Model):
         unique_together = ("user", "partner")
 
 
-class Message(models.Model):
-    message = models.TextField()
-    sender = models.ForeignKey(User,
-                                related_name='sender',
-                                on_delete=models.SET(get_sentinel_user))
-    recipient = models.ForeignKey(User,
-                                related_name='recipient',
-                                on_delete=models.SET(get_sentinel_user))
-    sendAt = models.CharField(max_length=100, default=0)
-    isProposal = models.BooleanField(default=False)
-    proposal = models.ForeignKey(Loan,
-                                related_name='proposal',
-                                on_delete = models.CASCADE,
-                                default = None)
+
 
 class Picture(models.Model):
     picture = models.ImageField(upload_to='pic', storage=gd_storage)
@@ -111,6 +98,21 @@ class Loan(models.Model):
 
     class Meta:
         unique_together = ('tool', 'borrowing_user', 'date')
+
+class Message(models.Model):
+    message = models.TextField()
+    sender = models.ForeignKey(User,
+                                related_name='sender',
+                                on_delete=models.SET(get_sentinel_user))
+    recipient = models.ForeignKey(User,
+                                related_name='recipient',
+                                on_delete=models.SET(get_sentinel_user))
+    sendAt = models.CharField(max_length=100, default=0)
+    isProposal = models.BooleanField(default=False)
+    proposal = models.ForeignKey(Loan,
+                                related_name='proposal',
+                                on_delete = models.CASCADE,
+                                default = None)
 
 
 @receiver(post_save, sender=settings.AUTH_USER_MODEL)
