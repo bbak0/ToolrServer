@@ -330,6 +330,11 @@ def acceptProposal(request, loan_id):
         tool = Tool.objects.get(pk = loan.tool_id)
     except Tool.DoesNotExist:
         raise NotFound('could not find tool')
+
+    try:
+        proposalMessage = Message.objects.get(proposal = loan)
+    except Message.DoesNotExist:
+        raise NotFound('could not find proposal')
     
     if loan.pending == True:
 
@@ -349,7 +354,8 @@ def acceptProposal(request, loan_id):
         else:
             loan.accepted = False
             
-        
+        proposalMessage.isProposal = False
+        proposalMessage.save()
         loan.pending = False
         loan.save()
     else:
