@@ -14,7 +14,7 @@ class PictureSerializer(serializers.ModelSerializer):
 
 class ToolSerializer(serializers.ModelSerializer):
 
-    picture = PictureSerializer(many=True, required=False)
+    picture = PictureSerializer(many=True, required=False, read_only = True)
     city = serializers.CharField(max_length = 100, read_only = True)
     adress = serializers.CharField(max_length = 100, read_only = True)
 
@@ -36,7 +36,7 @@ class UserProfileSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = UserProfile
-        fields = ('first_name', 'last_name', 'email', 'rating', 'user', 'birthdate', 'adress')
+        fields = ('first_name', 'last_name', 'email', 'rating', 'user', 'birthdate', 'adress', 'avatar_url')
 
 
 class UserRatingSerializer(serializers.ModelSerializer):

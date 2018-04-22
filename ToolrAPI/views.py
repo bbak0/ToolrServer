@@ -62,6 +62,7 @@ def register(request):
             # ID token is valid. Get the user's Google Account ID from the decoded token.
             userid = idinfo['sub']
             print(userid)
+            print(idinfo)
             if not User.objects.filter(username=userid).exists():
                 newuser = User.objects.create_user(username=userid, password=userid)
                 newuser.save()
@@ -70,9 +71,17 @@ def register(request):
                 uprofile.last_name = idinfo['family_name']
                 uprofile.email = idinfo['email']
                 uprofile.google_id = userid
+                avatar_url = idinfo['picture']
                 uprofile.save()
             else:
                 newuser = User.objects.get(username=userid)
+                uprofile = UserProfile(user = newuser)
+                uprofile.first_name = idinfo['given_name']
+                uprofile.last_name = idinfo['family_name']
+                uprofile.email = idinfo['email']
+                uprofile.google_id = userid
+                uprofile.avatar_url = idinfo['picture']
+                uprofile.save()
 
         except ValueError as e:
             print(e)
@@ -123,12 +132,18 @@ class ArbitraryToolViewSet(viewsets.ModelViewSet):
         city = self.request.data['city']
         adress = self.request.data['adress']
         geo = gmaps.geocode(city + ', ' + adress)
-        serializer.save(location_lat = geo[0]['geometry']['location']['lat'],
+        if not geo:
+            serializer.save(location_lat = 0,
+                        location_lon = 0,
+                        owner=self.request.user)
+        else :
+            serializer.save(location_lat = geo[0]['geometry']['location']['lat'],
                         location_lon = geo[0]['geometry']['location']['lng'],
                         owner=self.request.user)
 
     def perform_update(self, serializer):
         serializer.save(owner=self.request.user)
+        
         
 class MessageViewSet(viewsets.ModelViewSet):
     serializer_class = MessageSerializer

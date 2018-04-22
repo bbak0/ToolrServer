@@ -32,6 +32,7 @@ class UserProfile(models.Model):
     birthdate = models.DateField(default = '1970-01-01')
     email = models.EmailField()
     google_id = models.TextField()
+    avatar_url = models.TextField(null = True)
     
 
 
