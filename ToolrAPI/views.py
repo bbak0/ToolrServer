@@ -341,14 +341,14 @@ def acceptProposal(request, loan_id):
                 return Response(status = status.HTTP_409_CONFLICT, 
                                 data={"error": "tool is unavailable currently"})
             loan.accepted = True
-            loan.proposal = False
+            
             tool.availability = False
             tool.lent_to = loan.borrowing_user
             tool.save()
             
         else:
             loan.accepted = False
-            loan.proposal = False
+            
         
         loan.pending = False
         loan.save()
